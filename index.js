@@ -6,14 +6,17 @@ import {
   registerValidation,
   loginValidation,
   companiesCreateValidation,
+  phonesCreateValidation,
 } from "./validations.js";
 
 import checkAuth from "./utils/checkAuth.js";
 
 import * as UserController from "./controllers/userController.js";
 import * as CompaniesController from "./controllers/companiesController.js";
-import handleValidationsErrors from "./utils/handleValidationsErrors.js";
+import * as PhonesController from "./controllers/phonesController.js"
 
+import handleValidationsErrors from "./utils/handleValidationsErrors.js";
+import cors from "cors";
 mongoose
   .connect(
     "mongodb+srv://ibotnari2414:Botnari123@cluster0.i9qpoqf.mongodb.net/ReactTracker?retryWrites=true&w=majority"
@@ -22,6 +25,7 @@ mongoose
   .catch((error) => console.log("Database connection error.", error));
 
 const app = exppress();
+app.use(cors());
 
 app.use(exppress.json());
 app.post(
@@ -38,10 +42,9 @@ app.post(
 );
 app.get("/auth/me", checkAuth, UserController.authme);
 
-app.get("/companies", checkAuth, CompaniesController.getAll);
+app.get("/companies", CompaniesController.getAll);
 app.post(
   "/companies",
-  checkAuth,
   companiesCreateValidation,
   CompaniesController.create
 );
@@ -52,6 +55,22 @@ app.patch(
   companiesCreateValidation,
   handleValidationsErrors,
   CompaniesController.update
+);
+///---------------------------------
+app.get("/phones", PhonesController.getAll);
+app.post(
+  "/phones",
+
+  phonesCreateValidation,
+  PhonesController.create
+);
+app.delete("/phones/:id", checkAuth, PhonesController.remove);
+app.patch(
+  "/phones/:id",
+  checkAuth,
+  phonesCreateValidation,
+  handleValidationsErrors,
+  PhonesController.update
 );
 
 app.listen(4000, (error) => {

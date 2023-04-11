@@ -16,7 +16,7 @@ export const getAll = async (req, res) => {
 export const create = async (req, res) => {
   try {
     const doc = new CompaniesModel({
-      name: req.body.name,
+      companyName: req.body.companyName,
       isActive: req.body.isActive,
     });
 
@@ -56,7 +56,7 @@ export const update = async (req, res) => {
         _id: companiesId,
       },
       {
-        name: req.body.name,
+        companyName: req.body.companyName,
         isActive: req.body.isActive,
       },
       res.json({

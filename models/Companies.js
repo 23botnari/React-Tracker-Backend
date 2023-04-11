@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
 const CompaniesSchema = new mongoose.Schema(
   {
-    name: {
-      type: String,
+    companyName: {
+      type: String, 
       required: true,
     },
     isActive: {
       type: Boolean,
-      required: true,
+      // required: true,
       default:false,
     },
   },
