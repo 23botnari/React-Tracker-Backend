@@ -43,6 +43,7 @@ app.post(
 app.get("/auth/me", checkAuth, UserController.authme);
 
 app.get("/companies", CompaniesController.getAll);
+
 app.post(
   "/companies",
   companiesCreateValidation,
