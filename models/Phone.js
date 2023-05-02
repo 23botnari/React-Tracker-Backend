@@ -17,10 +17,6 @@ const PhoneSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    trailerNumber: {
-      type: String,
-      required: true,
-    },
   },
   {
     timestamps: true,

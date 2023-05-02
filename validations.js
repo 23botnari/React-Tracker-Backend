@@ -9,14 +9,14 @@ export const registerValidation = [
   body("password", "Needed minimum 5 symbols").isLength({ min: 5 }),
 ];
 export const companiesCreateValidation = [
-  body("name", "Minimum 3 symbols.").isLength({ min: 3 }).isString(),
+  body("companyName", "Minimum 3 symbols.").isLength({ min: 3 }).isString(),
   body("isActive", "Something Wrong happened.").isBoolean(),
 ];
 
 export const phonesCreateValidation = [
-  body("phonenNumber", "Minimum 3 symbols.").isLength({ min: 3 }).isString(),
+  body("phoneNumber", "Minimum 3 symbols.").isLength({ min: 3 }).isString(),
   body("company", "Minimum 3 symbols.").isLength({ min: 3 }).isString(),
   body("driverName", "Minimum 3 symbols.").isLength({ min: 3 }).isString(),
-  body("truckNumber", "Minimum 3 symbols.").isLength({ min: 3 }).isString(),
-  body("trailerNumber", "Minimum 3 symbols.").isLength({ min: 3 }).isString(),
+  body("truckNumber", "Minimum 1 symbols.").isLength({ min: 1 }).isString(),
+  
 ];

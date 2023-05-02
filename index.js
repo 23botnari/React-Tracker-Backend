@@ -13,7 +13,7 @@ import checkAuth from "./utils/checkAuth.js";
 
 import * as UserController from "./controllers/userController.js";
 import * as CompaniesController from "./controllers/companiesController.js";
-import * as PhonesController from "./controllers/phonesController.js"
+import * as PhonesController from "./controllers/phonesController.js";
 
 import handleValidationsErrors from "./utils/handleValidationsErrors.js";
 import cors from "cors";
@@ -44,15 +44,10 @@ app.get("/auth/me", checkAuth, UserController.authme);
 
 app.get("/companies", CompaniesController.getAll);
 
-app.post(
-  "/companies",
-  companiesCreateValidation,
-  CompaniesController.create
-);
-app.delete("/companies/:id", checkAuth, CompaniesController.remove);
+app.post("/companies", companiesCreateValidation, CompaniesController.create);
+app.delete("/companies/:id", CompaniesController.remove);
 app.patch(
   "/companies/:id",
-  checkAuth,
   companiesCreateValidation,
   handleValidationsErrors,
   CompaniesController.update
@@ -61,14 +56,12 @@ app.patch(
 app.get("/phones", PhonesController.getAll);
 app.post(
   "/phones",
-
   phonesCreateValidation,
   PhonesController.create
 );
-app.delete("/phones/:id", checkAuth, PhonesController.remove);
+app.delete("/phones/:id", PhonesController.remove);
 app.patch(
   "/phones/:id",
-  checkAuth,
   phonesCreateValidation,
   handleValidationsErrors,
   PhonesController.update
