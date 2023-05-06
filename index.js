@@ -14,9 +14,11 @@ import checkAuth from "./utils/checkAuth.js";
 import * as UserController from "./controllers/userController.js";
 import * as CompaniesController from "./controllers/companiesController.js";
 import * as PhonesController from "./controllers/phonesController.js";
+import * as RoutesController from "./controllers/routesController.js";
 
 import handleValidationsErrors from "./utils/handleValidationsErrors.js";
 import cors from "cors";
+
 mongoose
   .connect(
     "mongodb+srv://ibotnari2414:Botnari123@cluster0.i9qpoqf.mongodb.net/ReactTracker?retryWrites=true&w=majority"
@@ -40,6 +42,16 @@ app.post(
   handleValidationsErrors,
   UserController.register
 );
+///---------------------------------
+app.get("/routes", RoutesController.getAll);
+
+app.post("/routes", RoutesController.create);
+app.delete("/routes/:id", RoutesController.remove);
+app.patch(
+  "/routes/:id",
+  RoutesController.update
+);
+///---------------------------------
 app.get("/auth/me", checkAuth, UserController.authme);
 
 app.get("/companies", CompaniesController.getAll);
@@ -54,11 +66,7 @@ app.patch(
 );
 ///---------------------------------
 app.get("/phones", PhonesController.getAll);
-app.post(
-  "/phones",
-  phonesCreateValidation,
-  PhonesController.create
-);
+app.post("/phones", phonesCreateValidation, PhonesController.create);
 app.delete("/phones/:id", PhonesController.remove);
 app.patch(
   "/phones/:id",
@@ -66,6 +74,7 @@ app.patch(
   handleValidationsErrors,
   PhonesController.update
 );
+///---------------------------------
 
 app.listen(4000, (error) => {
   if (error) {
