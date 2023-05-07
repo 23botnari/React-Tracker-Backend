@@ -18,6 +18,10 @@ export const create = async (req, res) => {
     const doc = new RoutesModel({
       originRef: req.body.originRef,
       destinationRef: req.body.destinationRef,
+      driverName: req.body.driverName,
+      companyName: req.body.companyName,
+      phoneNumber: req.body.phoneNumber,
+      truckNumber: req.body.truckNumber,
     });
 
     const routes = await doc.save();
@@ -58,6 +62,10 @@ export const update = async (req, res) => {
       {
         originRef: req.body.originRef,
         destinationRef: req.body.destinationRef,
+        driverName: req.body.driverName,
+        companyName: req.body.companyName,
+        phoneNumber: req.body.phoneNumber,
+        truckNumber: req.body.truckNumber,
       },
       res.json({
         succes: true,
