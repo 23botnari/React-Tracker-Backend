@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-const PhoneSchema = new mongoose.Schema(
+const DriverSchema = new mongoose.Schema(
   {
-    phoneNumber: {
+    driverNumber: {
       type: String,
       required: true,
     },
@@ -22,4 +22,4 @@ const PhoneSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-export default mongoose.model("Phones", PhoneSchema);
+export default mongoose.model("Drivers", DriverSchema);

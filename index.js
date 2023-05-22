@@ -6,14 +6,14 @@ import {
   registerValidation,
   loginValidation,
   companiesCreateValidation,
-  phonesCreateValidation,
+  driversCreateValidation,
 } from "./validations.js";
 
 import checkAuth from "./utils/checkAuth.js";
 
 import * as UserController from "./controllers/userController.js";
 import * as CompaniesController from "./controllers/companiesController.js";
-import * as PhonesController from "./controllers/phonesController.js";
+import * as driversController from "./controllers/driversController.js";
 import * as RoutesController from "./controllers/routesController.js";
 
 import handleValidationsErrors from "./utils/handleValidationsErrors.js";
@@ -42,6 +42,7 @@ app.post(
   handleValidationsErrors,
   UserController.register
 );
+app.get("/auth/role",UserController.protect,UserController.checkAuth)
 ///---------------------------------
 app.get("/routes", RoutesController.getAll);
 
@@ -52,7 +53,7 @@ app.patch(
   RoutesController.update
 );
 ///---------------------------------
-app.get("/auth/me", checkAuth, UserController.authme);
+app.get("/auth/me", UserController.protect, UserController.authme);
 
 app.get("/companies", CompaniesController.getAll);
 
@@ -65,14 +66,14 @@ app.patch(
   CompaniesController.update
 );
 ///---------------------------------
-app.get("/phones", PhonesController.getAll);
-app.post("/phones", phonesCreateValidation, PhonesController.create);
-app.delete("/phones/:id", PhonesController.remove);
+app.get("/drivers", driversController.getAll);
+app.post("/drivers", driversCreateValidation, driversController.create);
+app.delete("/drivers/:id", driversController.remove);
 app.patch(
-  "/phones/:id",
-  phonesCreateValidation,
+  "/drivers/:id",
+  driversCreateValidation,
   handleValidationsErrors,
-  PhonesController.update
+  driversController.update
 );
 ///---------------------------------
 

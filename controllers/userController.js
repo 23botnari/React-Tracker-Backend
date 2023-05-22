@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import UserModel from "../models/User.js";
 import User from "../models/User.js";
+import e from "express";
 
 export const login = async (req, res) => {
   try {
@@ -50,7 +51,7 @@ export const register = async (req, res) => {
       name: req.body.name,
       email: req.body.email,
       passwordHash: hash,
-      role:req.body.role,
+      role: req.body.role,
     });
 
     const user = await doc.save();
@@ -75,7 +76,7 @@ export const register = async (req, res) => {
   }
 };
 
-export const authme = async (req, res) => {
+export const authme1 = async (req, res) => {
   try {
     const user = await User.findById(req.userId);
     if (!user) {
@@ -92,3 +93,70 @@ export const authme = async (req, res) => {
     });
   }
 };
+
+export const authme = async (req, res) => {
+  console.log(req.userId)
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({
+        message: "User Not Found.",
+      });
+    }
+    const { name, ...userData } = user._doc; // Assuming username is a property in your User model
+    res.json({ name, ...userData }); // Include the username in the response
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "No access.",
+    });
+  }
+};
+export const checkAuth = async (req, res) => {
+  try {
+    // Retrieve the user's role based on the authenticated user ID
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    // Return the user's role in the response
+    res.json({
+      role: user.role,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Server Error",
+    });
+  }
+};
+
+// Middleware function to protect routes that require authentication
+export const protect = async (req, res, next) => {
+  try {
+    const authorization = req.headers.authorization;
+    if (!authorization) {
+      return res.status(401).json({
+        message: "Unauthorized",
+      });
+    }
+
+    const token = authorization.split(" ")[1];
+
+    const decoded = jwt.verify(token, "SecretKey3000");
+
+    req.user = decoded;
+
+    next();
+  } catch (error) {
+    console.log(error);
+    return res.status(401).json({
+      message: "Unauthorizeda",
+    });
+  }
+};
+

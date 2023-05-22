@@ -1,65 +1,65 @@
-import PhoneModel from "../models/Phone.js";
+import DriverSchema from "../models/Driver.js";
 
 export const getAll = async (req, res) => {
   try {
-    const phones = await PhoneModel.find().populate("");
+    const drivers = await DriverSchema.find().populate("");
 
-    res.json(phones);
+    res.json(drivers);
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      message: "Failed to get phones.",
+      message: "Failed to get drivers.",
     });
   }
 };
 
 export const create = async (req, res) => {
   try {
-    const doc = new PhoneModel({
-      phoneNumber: req.body.phoneNumber,
+    const doc = new DriverSchema({
+      driverNumber: req.body.driverNumber,
       company: req.body.company,
       driverName: req.body.driverName,
       truckNumber: req.body.truckNumber,
       trailerNumber: req.body.trailerNumber,
     });
 
-    const phones = await doc.save();
+    const drivers = await doc.save();
 
-    res.json(phones);
+    res.json(drivers);
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      message: "Failed to add new phone.",
+      message: "Failed to add new driver",
     });
   }
 };
 export const remove = async (req, res) => {
   try {
-    const phonesId = req.params.id;
+    const driversId = req.params.id;
 
-    await PhoneModel.findOneAndDelete({
-      _id: phonesId,
+    await DriverSchema.findOneAndDelete({
+      _id: driversId,
     }).then(() => {
       res.json({
-        message: "Phone was deleted.",
+        message: "Driver was deleted.",
       });
     });
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      message: "Failed to find a Phone.",
+      message: "Failed to find a driver.",
     });
   }
 };
 export const update = async (req, res) => {
   try {
-    const phonesId = req.params.id;
-    await PhoneModel.updateOne(
+    const driversId = req.params.id;
+    await DriverSchema.updateOne(
       {
-        _id: phonesId,
+        _id: driversId,
       },
       {
-        phoneNumber: req.body.phoneNumber,
+        driverNumber: req.body.driverNumber,
         company: req.body.company,
         driverName: req.body.driverName,
         truckNumber: req.body.truckNumber,
@@ -72,7 +72,7 @@ export const update = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      message: "Failed to update Phone.",
+      message: "Failed to update driver.",
     });
   }
 };
