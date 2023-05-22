@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const UserSchema = new mongoose.Schema(
   {
-    fullName: {
+    name: {
       type: String,
       required: true,
     },
@@ -14,9 +14,15 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+
+    role: {
+      type: String,
+      enum: ["driver", "operator"],
+      default: "driver",
+    },
   },
   {
     timestamps: true,
   }
 );
-export default mongoose.model('User',UserSchema);
+export default mongoose.model("User", UserSchema);

@@ -47,9 +47,10 @@ export const register = async (req, res) => {
     const hash = await bcrypt.hash(password, salt);
 
     const doc = new UserModel({
-      fullName: req.body.fullName,
+      name: req.body.name,
       email: req.body.email,
       passwordHash: hash,
+      role:req.body.role,
     });
 
     const user = await doc.save();
