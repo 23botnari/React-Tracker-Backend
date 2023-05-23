@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 const DriverSchema = new mongoose.Schema(
   {
+    
     driverNumber: {
       type: String,
       required: true,
@@ -10,6 +11,10 @@ const DriverSchema = new mongoose.Schema(
       required: true,
     },
     driverName: {
+      type: String,
+      required: true,
+    },
+    driverSurname: {
       type: String,
       required: true,
     },

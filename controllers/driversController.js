@@ -1,4 +1,6 @@
 import DriverSchema from "../models/Driver.js";
+import UserModel from "../models/User.js";
+import bcrypt from "bcrypt";
 
 export const getAll = async (req, res) => {
   try {
@@ -13,26 +15,59 @@ export const getAll = async (req, res) => {
   }
 };
 
-export const create = async (req, res) => {
+export const getById = async (req, res) => {
   try {
-    const doc = new DriverSchema({
-      driverNumber: req.body.driverNumber,
-      company: req.body.company,
-      driverName: req.body.driverName,
-      truckNumber: req.body.truckNumber,
-      trailerNumber: req.body.trailerNumber,
-    });
+    const { id } = req.params;
+    const driver = await DriverSchema.findById(id);
+    
+    if (!driver) {
+      return res.status(404).json({ message: 'Driver not found' });
+    }
 
-    const drivers = await doc.save();
-
-    res.json(drivers);
+    res.json(driver);
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      message: "Failed to add new driver",
+      message: "Failed to get driver.",
     });
   }
 };
+
+
+export const create = async (req, res) => {
+  try {
+    const driverData = {
+      driverNumber: req.body.driverNumber,
+      company: req.body.company,
+      driverName: req.body.driverName,
+      driverSurname: req.body.driverSurname,
+      truckNumber: req.body.truckNumber,
+    };
+    const newDriver = await DriverSchema.create(driverData);
+
+    const user = {
+      name: newDriver.driverName + " " + newDriver.driverSurname,
+      email: `${newDriver.driverName + newDriver.driverSurname}@tracker.com`,
+      password: "12345", //
+      role: "driver",
+    };
+
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(user.password, saltRounds);
+    user.passwordHash = hashedPassword;
+    delete user.password;
+
+    const newUser = await UserModel.create(user);
+
+    res.json({ driver: newDriver, user: newUser });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Failed to add new driver and user",
+    });
+  }
+};
+
 export const remove = async (req, res) => {
   try {
     const driversId = req.params.id;
@@ -51,6 +86,7 @@ export const remove = async (req, res) => {
     });
   }
 };
+
 export const update = async (req, res) => {
   try {
     const driversId = req.params.id;
@@ -62,6 +98,7 @@ export const update = async (req, res) => {
         driverNumber: req.body.driverNumber,
         company: req.body.company,
         driverName: req.body.driverName,
+        driverSurname:req.body.driverSurname,
         truckNumber: req.body.truckNumber,
         trailerNumber: req.body.trailerNumber,
       },

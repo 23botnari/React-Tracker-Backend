@@ -13,11 +13,15 @@ const RoutesSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    driverSurname: {
+      type: String,
+      required: true,
+    },
     companyName: {
       type: String,
       required: true,
     },
-    phoneNumber: {
+    driverNumber: {
       type: String,
       required: true,
     },

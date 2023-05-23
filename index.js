@@ -43,6 +43,7 @@ app.post(
   UserController.register
 );
 app.get("/auth/role",UserController.protect,UserController.checkAuth)
+app.get("/auth/me", UserController.protect, UserController.authme);
 ///---------------------------------
 app.get("/routes", RoutesController.getAll);
 
@@ -53,7 +54,6 @@ app.patch(
   RoutesController.update
 );
 ///---------------------------------
-app.get("/auth/me", UserController.protect, UserController.authme);
 
 app.get("/companies", CompaniesController.getAll);
 
@@ -67,6 +67,8 @@ app.patch(
 );
 ///---------------------------------
 app.get("/drivers", driversController.getAll);
+app.get("/drivers/:id", driversController.getById);
+
 app.post("/drivers", driversCreateValidation, driversController.create);
 app.delete("/drivers/:id", driversController.remove);
 app.patch(

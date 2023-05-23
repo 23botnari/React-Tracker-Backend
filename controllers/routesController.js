@@ -19,8 +19,9 @@ export const create = async (req, res) => {
       originRef: req.body.originRef,
       destinationRef: req.body.destinationRef,
       driverName: req.body.driverName,
+      driverSurname: req.body.driverSurname,
       companyName: req.body.companyName,
-      phoneNumber: req.body.phoneNumber,
+      driverNumber: req.body.driverNumber,
       truckNumber: req.body.truckNumber,
     });
 
@@ -63,8 +64,9 @@ export const update = async (req, res) => {
         originRef: req.body.originRef,
         destinationRef: req.body.destinationRef,
         driverName: req.body.driverName,
+        driverSurname: req.body.driverSurname,
         companyName: req.body.companyName,
-        phoneNumber: req.body.phoneNumber,
+        driverNumber: req.body.driverNumber,
         truckNumber: req.body.truckNumber,
       },
       res.json({

@@ -2,7 +2,6 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import UserModel from "../models/User.js";
 import User from "../models/User.js";
-import e from "express";
 
 export const login = async (req, res) => {
   try {
@@ -76,23 +75,7 @@ export const register = async (req, res) => {
   }
 };
 
-export const authme1 = async (req, res) => {
-  try {
-    const user = await User.findById(req.userId);
-    if (!user) {
-      return res.status(404).json({
-        message: "User Not Found.",
-      });
-    }
-    const { passwordHash, ...userData } = user._doc;
-    res.json(userData);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      message: "No access.",
-    });
-  }
-};
+
 
 export const authme = async (req, res) => {
   console.log(req.userId)
@@ -103,8 +86,8 @@ export const authme = async (req, res) => {
         message: "User Not Found.",
       });
     }
-    const { name, ...userData } = user._doc; // Assuming username is a property in your User model
-    res.json({ name, ...userData }); // Include the username in the response
+    const { name, ...userData } = user._doc; 
+    res.json({ name, ...userData }); 
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -114,7 +97,7 @@ export const authme = async (req, res) => {
 };
 export const checkAuth = async (req, res) => {
   try {
-    // Retrieve the user's role based on the authenticated user ID
+
     const user = await User.findById(req.user._id);
 
     if (!user) {
@@ -123,7 +106,6 @@ export const checkAuth = async (req, res) => {
       });
     }
 
-    // Return the user's role in the response
     res.json({
       role: user.role,
     });
@@ -135,7 +117,6 @@ export const checkAuth = async (req, res) => {
   }
 };
 
-// Middleware function to protect routes that require authentication
 export const protect = async (req, res, next) => {
   try {
     const authorization = req.headers.authorization;
