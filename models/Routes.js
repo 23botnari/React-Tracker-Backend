@@ -9,6 +9,11 @@ const RoutesSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    driverId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User", 
+      required: true,
+    },
     driverName: {
       type: String,
       required: true,

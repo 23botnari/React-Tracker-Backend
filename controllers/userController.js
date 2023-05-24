@@ -75,10 +75,7 @@ export const register = async (req, res) => {
   }
 };
 
-
-
 export const authme = async (req, res) => {
-  console.log(req.userId)
   try {
     const user = await User.findById(req.user._id);
     if (!user) {
@@ -86,8 +83,8 @@ export const authme = async (req, res) => {
         message: "User Not Found.",
       });
     }
-    const { name, ...userData } = user._doc; 
-    res.json({ name, ...userData }); 
+    const { name, ...userData } = user._doc;
+    res.json({ name, ...userData });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -97,7 +94,6 @@ export const authme = async (req, res) => {
 };
 export const checkAuth = async (req, res) => {
   try {
-
     const user = await User.findById(req.user._id);
 
     if (!user) {
@@ -127,7 +123,6 @@ export const protect = async (req, res, next) => {
     }
 
     const token = authorization.split(" ")[1];
-
     const decoded = jwt.verify(token, "SecretKey3000");
 
     req.user = decoded;
@@ -141,3 +136,22 @@ export const protect = async (req, res, next) => {
   }
 };
 
+export const getUser = async (req, res) => {
+  try {
+    const { name } = req.query;
+
+    // Query the database to find the user based on the name
+    const user = await UserModel.findOne({ name });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: 'Failed to fetch user',
+    });
+  }
+};

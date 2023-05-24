@@ -44,9 +44,13 @@ app.post(
 );
 app.get("/auth/role",UserController.protect,UserController.checkAuth)
 app.get("/auth/me", UserController.protect, UserController.authme);
+
+// Backend API route for fetching user by driver name
+app.get("/users",UserController.getUser);
+
 ///---------------------------------
 app.get("/routes", RoutesController.getAll);
-
+app.get("/routes/:id",RoutesController.getRoutesByDriver)
 app.post("/routes", RoutesController.create);
 app.delete("/routes/:id", RoutesController.remove);
 app.patch(

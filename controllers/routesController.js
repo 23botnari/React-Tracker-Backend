@@ -12,12 +12,48 @@ export const getAll = async (req, res) => {
     });
   }
 };
+export const getRoutesByDriver1 = async (req, res) => {
+  const { driverId } = req.params;
+  try {
+    const routes = await RoutesModel.findById(driverId);
+    console.log(driverId)
+
+    res.json(routes);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Failed to get routes.",
+    });
+  }
+};
+
+export const getRoutesByDriver = async (req, res) => {
+ 
+  try {
+      const { id } = req.params;
+      const routes = await RoutesModel.find({driverId:id});
+    
+    if (!routes.length ) {
+      return res.status(404).json({ message: 'Routes not found' });
+    }
+
+    res.json(routes);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Failed to get routes.",
+    });
+  }
+};
+
+
 
 export const create = async (req, res) => {
   try {
     const doc = new RoutesModel({
       originRef: req.body.originRef,
       destinationRef: req.body.destinationRef,
+      driverId:req.body.driverId,
       driverName: req.body.driverName,
       driverSurname: req.body.driverSurname,
       companyName: req.body.companyName,
@@ -63,6 +99,8 @@ export const update = async (req, res) => {
       {
         originRef: req.body.originRef,
         destinationRef: req.body.destinationRef,
+
+        driverId:req.body.driverId,
         driverName: req.body.driverName,
         driverSurname: req.body.driverSurname,
         companyName: req.body.companyName,
