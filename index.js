@@ -9,8 +9,6 @@ import {
   driversCreateValidation,
 } from "./validations.js";
 
-import checkAuth from "./utils/checkAuth.js";
-
 import * as UserController from "./controllers/userController.js";
 import * as CompaniesController from "./controllers/companiesController.js";
 import * as driversController from "./controllers/driversController.js";
@@ -18,13 +16,24 @@ import * as RoutesController from "./controllers/routesController.js";
 
 import handleValidationsErrors from "./utils/handleValidationsErrors.js";
 import cors from "cors";
+import * as dotenv from 'dotenv' 
+dotenv.config()
+
 
 mongoose
-  .connect(
-    "mongodb+srv://ibotnari2414:Botnari123@cluster0.i9qpoqf.mongodb.net/ReactTracker?retryWrites=true&w=majority"
-  )
-  .then(() => console.log("Database is Connected."))
-  .catch((error) => console.log("Database connection error.", error));
+  .connect(process.env.MONGODB_URI)
+  .then(() => {
+    const PORT = process.env.PORT || 8000;
+    app.listen(PORT, () => {
+      console.log(`App is Listening on PORT ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+const corsOptions = {
+  origin: "http://localhost:3000", // frontend URI (ReactJS)
+};
 
 const app = exppress();
 app.use(cors());
@@ -42,21 +51,18 @@ app.post(
   handleValidationsErrors,
   UserController.register
 );
-app.get("/auth/role",UserController.protect,UserController.checkAuth)
+app.get("/auth/role", UserController.protect, UserController.checkAuth);
 app.get("/auth/me", UserController.protect, UserController.authme);
 
 // Backend API route for fetching user by driver name
-app.get("/users",UserController.getUser);
+app.get("/users", UserController.getUser);
 
 ///---------------------------------
 app.get("/routes", RoutesController.getAll);
-app.get("/routes/:id",RoutesController.getRoutesByDriver)
+app.get("/routes/:id", RoutesController.getRoutesByDriver);
 app.post("/routes", RoutesController.create);
 app.delete("/routes/:id", RoutesController.remove);
-app.patch(
-  "/routes/:id",
-  RoutesController.update
-);
+app.patch("/routes/:id", RoutesController.update);
 ///---------------------------------
 
 app.get("/companies", CompaniesController.getAll);
