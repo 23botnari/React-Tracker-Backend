@@ -100,7 +100,6 @@ export const update = async (req, res) => {
         driverName: req.body.driverName,
         driverSurname:req.body.driverSurname,
         truckNumber: req.body.truckNumber,
-        trailerNumber: req.body.trailerNumber,
       },
       res.json({
         succes: true,

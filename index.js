@@ -16,22 +16,19 @@ import * as RoutesController from "./controllers/routesController.js";
 
 import handleValidationsErrors from "./utils/handleValidationsErrors.js";
 import cors from "cors";
+ 
 
-import dotenv from 'dotenv'
-dotenv.config()
   
+mongoose
+  .connect(
+    "mongodb+srv://ibotnari2414:Botnari123@cluster0.i9qpoqf.mongodb.net/ReactTracker?retryWrites=true&w=majority"
+  )
+  .then(() => console.log("Database is Connected."))
+  .catch((error) => console.log("Database connection error.", error));
 
 
-  mongoose.connect(process.env.MONGODB_URI).then(() => {
-    console.log("Database is Connected.")
-    const PORT = process.env.PORT || 8000
-    .catch((error) => console.log("Database connection error.", error));
-    app.listen(PORT, () => {
-      console.log(`App is Listening on PORT ${PORT}`);
-    })
-}).catch(err => {
-    console.log(err);
-});
+
+// middleware
 const corsOptions = {
     origin: "http://localhost:3000" // frontend URI (ReactJS)
 }
